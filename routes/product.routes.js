@@ -5,12 +5,11 @@ const mongoose = require("mongoose");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 const Product = require("../models/Product.model");
-const Merchant = require("../models/Merchant.model");
+const Order = require("../models/Order.model");
 
 //READ list of products
 router.get("/products", (req, res, next) => {
   Product.find()
-    .populate("merchant_name")
     .then((allProducts) => {
       res.json(allProducts);
     })
@@ -20,9 +19,9 @@ router.get("/products", (req, res, next) => {
 //CREATE new product
 // ADD AUTHENTICATION
 router.post("/products/add", (req, res, next) => {
-  const { title, short_desc, price } = req.body;
+  const { title, short_desc, price, brand } = req.body;
 
-  Product.create({ title, short_desc, price, merchant_name: "who am i" })
+  Product.create({ title, short_desc, price, brand })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
@@ -37,10 +36,7 @@ router.get("/products/:productId", (req, res, next) => {
     return;
   }
 
-  // Each Product document has `merchant` array holding `_id`s of Merchant documents
-  // We use .populate() method to get swap the `_id`s for the actual Merchant documents
   Product.findById(productId)
-    .populate("merchant_name")
     .then((product) => res.json(product))
     .catch((error) => res.json(error));
 });
@@ -72,13 +68,13 @@ router.delete("/products/:productId", (req, res, next) => {
 
   Product.findByIdAndRemove(productId)
     // .then((deteletedProduct) => {
-    //   return Merchant.deleteMany({
-    //     _id: { $in: deteletedProduct.merchant_name },
+    //   return User.cart.deleteMany({
+    //     _id: { $in: deteletedProduct.cart }, ???
     //   });
     // })
     .then(() =>
       res.json({
-        message: `Product with id ${productId} & all associated merchant were removed successfully.`,
+        message: `Product with id ${productId} & all associated shopping carts were removed successfully.`,
       })
     )
     .catch((error) => res.status(500).json(error));

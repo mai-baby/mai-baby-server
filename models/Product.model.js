@@ -9,8 +9,12 @@ const productSchema = new Schema(
     short_desc: { type: String, required: true },
     long_desc: { type: String },
     price: { type: Number, required: true },
-    // merchant_name: { type: Schema.Types.ObjectId, ref: "Merchant" },
-    merchant_name: { type: String, required: true },
+    brand: { type: String, required: true },
+    imageURL: {
+      type: String,
+      default:
+        "http://sc04.alicdn.com/kf/H6c90d253386a4d08a0f4b96b462b6cefh.jpg",
+    },
   },
   {
     timestamps: true,
