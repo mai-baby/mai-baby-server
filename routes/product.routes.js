@@ -19,9 +19,9 @@ router.get("/products", (req, res, next) => {
 //CREATE new product
 // ADD AUTHENTICATION
 router.post("/products/add", (req, res, next) => {
-  const { title, short_desc, price, brand } = req.body;
+  const { title, short_desc, price, brand, imageURL } = req.body;
 
-  Product.create({ title, short_desc, price, brand })
+  Product.create({ title, short_desc, price, brand, imageURL })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
