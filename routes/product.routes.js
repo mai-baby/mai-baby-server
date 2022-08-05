@@ -18,10 +18,10 @@ router.get("/products", (req, res, next) => {
 
 //CREATE new product
 // ADD AUTHENTICATION
-router.post("/products/add", (req, res, next) => {
-  const { title, short_desc, price, brand, imageURL } = req.body;
+router.post("/products", (req, res, next) => {
+  const { title, shortDescription, price, brand, imageURL } = req.body;
 
-  Product.create({ title, short_desc, price, brand, imageURL })
+  Product.create({ title, shortDescription, price, brand, imageURL })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });

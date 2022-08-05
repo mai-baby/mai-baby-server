@@ -7,8 +7,9 @@ const userSchema = new Schema(
   {
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    user_name: { type: String, required: true },
-    cart: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+    username: { type: String, required: true },
+    // basket: [{ type: Schema.Types.ObjectId, ref: "Product" }], leave it for v2, store in React for now, maybe store quantity here
+    isAdmin: { type: Boolean, default: false },
   },
   {
     timestamps: true,

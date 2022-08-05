@@ -6,8 +6,8 @@ const { Schema, model } = mongoose;
 const productSchema = new Schema(
   {
     title: { type: String, required: true },
-    short_desc: { type: String, required: true },
-    long_desc: { type: String },
+    shortDescription: { type: String, required: true },
+    longDescription: { type: String },
     price: { type: Number, required: true },
     brand: { type: String, required: true },
     imageURL: {

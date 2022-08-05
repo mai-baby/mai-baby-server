@@ -14,9 +14,9 @@ const saltRounds = 10;
 const User = require("../models/User.model");
 
 router.post("/register", (req, res) => {
-  const { user_name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!user_name) {
+  if (!username) {
     return res
       .status(400)
       .json({ errorMessage: "Please provide your username." });
@@ -41,7 +41,7 @@ router.post("/register", (req, res) => {
   */
 
   // Search the database for a user with the username submitted in the form
-  User.findOne({ user_name }).then((found) => {
+  User.findOne({ username }).then((found) => {
     // If the user is found, send the message username is taken
     if (found) {
       return res.status(400).json({ errorMessage: "Username already taken." });
@@ -55,7 +55,7 @@ router.post("/register", (req, res) => {
         // Create a user and save it in the database
         return User.create({
           email,
-          user_name,
+          username,
           password: hashedPassword,
         });
       })
@@ -78,9 +78,9 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-  const { user_name, password } = req.body;
+  const { username, password } = req.body;
 
-  if (!user_name) {
+  if (!username) {
     return res
       .status(400)
       .json({ errorMessage: "Please provide your username." });
@@ -95,7 +95,7 @@ router.post("/login", (req, res, next) => {
   }
 
   // Search the database for a user with the username submitted in the form
-  User.findOne({ user_name })
+  User.findOne({ username })
     .then((user) => {
       // If the user isn't found, send the message that user provided wrong credentials
       if (!user) {
@@ -110,10 +110,10 @@ router.post("/login", (req, res, next) => {
 
         //at this point, we know that credentials are correct (login is successfull)
 
-        const { _id, user_name } = user;
+        const { _id, username } = user;
 
         // Create an object that will be set as the token payload
-        const payload = { _id, user_name };
+        const payload = { _id, username };
 
         // Create and sign the token
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
