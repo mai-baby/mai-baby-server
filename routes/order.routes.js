@@ -22,6 +22,7 @@ router.get("/orders", (req, res, next) => {
 // ADD AUTHENTICATION
 router.post("/checkout", (req, res, next) => {
   const {
+    customer,
     products,
     totalPrice,
     status,
@@ -29,6 +30,7 @@ router.post("/checkout", (req, res, next) => {
   } = req.body;
 
   Order.create({
+    customer,
     products,
     totalPrice,
     status,
@@ -39,7 +41,7 @@ router.post("/checkout", (req, res, next) => {
 });
 
 //READ Order details
-router.get("/checkout/:orderId", (req, res, next) => {
+router.get("/orders/:orderId", (req, res, next) => {
   const { orderId } = req.params;
 
   //validate orderId
@@ -55,7 +57,7 @@ router.get("/checkout/:orderId", (req, res, next) => {
 
 //UPDATE Order
 // ADD AUTHENTICATION
-router.put("/checkout/:orderId", (req, res, next) => {
+router.put("/orders/:orderId", (req, res, next) => {
   const { orderId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
@@ -70,7 +72,7 @@ router.put("/checkout/:orderId", (req, res, next) => {
 
 //DELETE Order
 // ADD AUTHENTICATION
-router.delete("/checkout/:orderId", (req, res, next) => {
+router.delete("/orders/:orderId", (req, res, next) => {
   const { orderId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
@@ -79,11 +81,6 @@ router.delete("/checkout/:orderId", (req, res, next) => {
   }
 
   Order.findByIdAndRemove(orderId)
-    // .then((deteletedOrder) => {
-    //   return User.cart.deleteMany({
-    //     _id: { $in: deteletedOrder.cart }, ???
-    //   });
-    // })
     .then(() =>
       res.json({
         message: `Order with id ${orderId} & all associated shopping carts were removed successfully.`,
