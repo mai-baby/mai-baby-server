@@ -67,11 +67,6 @@ router.delete("/products/:productId", (req, res, next) => {
   }
 
   Product.findByIdAndRemove(productId)
-    // .then((deteletedProduct) => {
-    //   return User.cart.deleteMany({
-    //     _id: { $in: deteletedProduct.cart }, ???
-    //   });
-    // })
     .then(() =>
       res.json({
         message: `Product with id ${productId} & all associated shopping carts were removed successfully.`,

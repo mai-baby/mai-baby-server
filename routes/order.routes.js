@@ -51,13 +51,14 @@ router.get("/orders/:orderId", (req, res, next) => {
   }
 
   Order.findById(orderId)
+    .populate("products")
     .then((order) => res.json(order))
     .catch((error) => res.json(error));
 });
 
 //UPDATE Order
 // ADD AUTHENTICATION
-router.put("/orders/:orderId", (req, res, next) => {
+router.put("/orders/edit/:orderId", (req, res, next) => {
   const { orderId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
@@ -68,6 +69,32 @@ router.put("/orders/:orderId", (req, res, next) => {
   Order.findByIdAndUpdate(orderId, req.body, { returnDocument: "after" })
     .then((updatedOrder) => res.json(updatedOrder))
     .catch((error) => res.json(error));
+});
+
+//DELETE Order Item
+// ADD AUTHENTICATION
+router.put("/orders/:orderId/:itemId", (req, res, next) => {
+  const { orderId, itemId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(orderId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Order.updateOne(
+    { cn: itemId },
+    {
+      $pull: {
+        products: itemId,
+      },
+    }
+  )
+    .then(() =>
+      res.json({
+        message: `Item with id ${itemId} was removed successfully from the order ${orderId}.`,
+      })
+    )
+    .catch((error) => res.status(500).json(error));
 });
 
 //DELETE Order
@@ -83,7 +110,7 @@ router.delete("/orders/:orderId", (req, res, next) => {
   Order.findByIdAndRemove(orderId)
     .then(() =>
       res.json({
-        message: `Order with id ${orderId} & all associated shopping carts were removed successfully.`,
+        message: `The order with the id ${orderId} was removed successfully.`,
       })
     )
     .catch((error) => res.status(500).json(error));
