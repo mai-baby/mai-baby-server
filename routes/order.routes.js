@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 const Order = require("../models/Order.model");
-const User = require("../models/User.model");
-const Product = require("../models/Product.model");
 
 //READ list of orders
 router.get("/orders", (req, res, next) => {
@@ -71,7 +69,7 @@ router.put("/orders/edit/:orderId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-//DELETE Order Item
+//DELETE Item from Order
 // ADD AUTHENTICATION
 router.put("/orders/:orderId/:itemId", (req, res, next) => {
   const { orderId, itemId } = req.params;
@@ -81,14 +79,11 @@ router.put("/orders/:orderId/:itemId", (req, res, next) => {
     return;
   }
 
-  Order.updateOne(
-    { cn: itemId },
-    {
-      $pull: {
-        products: itemId,
-      },
-    }
-  )
+  Order.findByIdAndUpdate(orderId, {
+    $pull: {
+      products: itemId,
+    },
+  })
     .then(() =>
       res.json({
         message: `Item with id ${itemId} was removed successfully from the order ${orderId}.`,
