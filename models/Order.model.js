@@ -6,17 +6,36 @@ const { Schema, model } = mongoose;
 const orderSchema = new Schema(
   {
     customer: { type: Schema.Types.ObjectId, ref: "User" },
-    // Don't store quantity in the first run
+    quantity: {
+      type: Number,
+      required: [true, "Quantity of this product required."],
+    },
     products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
-    totalPrice: Number,
-    status: String,
+    totalPrice: {
+      type: String,
+      required: [true, "Total price of the order required."],
+    },
+    status: { type: String, required: [true, "Status of the order required."] },
     address: {
-      fullname: { type: String, required: true },
-      street: { type: String, required: true },
-      postal: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      country: { type: String, required: true },
+      fullname: {
+        type: String,
+        required: [true, "Please fill in your full name."],
+      },
+      street: { type: String, required: [true, "Please fill in your street."] },
+      postal: {
+        type: String,
+        required: [true, "Please fill in your postal code."],
+      },
+      city: { type: String, required: [true, "Please fill in your city."] },
+      state: { type: String, required: [true, "Please fill in your state."] },
+      country: {
+        type: String,
+        required: [true, "Please fill in your country."],
+        enum: [
+          ["Germany", "Austria", "Switzerland"],
+          "Shipping only to the DACH region (Germany, Austria, Switzerland",
+        ],
+      },
     },
   },
   {
