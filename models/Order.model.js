@@ -6,11 +6,6 @@ const { Schema, model } = mongoose;
 const orderSchema = new Schema(
   {
     customer: { type: Schema.Types.ObjectId, ref: "User" },
-    quantity: {
-      type: Number,
-      required: [true, "Quantity of this product required."],
-      default: 1,
-    },
     products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
     totalPrice: {
       type: String,
