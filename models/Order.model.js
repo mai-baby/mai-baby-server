@@ -9,6 +9,7 @@ const orderSchema = new Schema(
     quantity: {
       type: Number,
       required: [true, "Quantity of this product required."],
+      default: 1,
     },
     products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
     totalPrice: {

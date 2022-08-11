@@ -10,7 +10,7 @@ const app = express();
 app.use(express.static("public"));
 
 router.post("/create-checkout-session", (req, res, next) => {
-  const lineItems = req.body;
+  //   const lineItems = req.body;
   console.log(req.body);
   stripe.checkout.sessions
     .create({
@@ -44,6 +44,7 @@ router.post("/create-checkout-session", (req, res, next) => {
     })
     .then((session) => {
       res.redirect(303, session.url);
+      //   res.json({ url: session.url });
     })
     .catch((error) => {
       res.status(500).json(error);
