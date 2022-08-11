@@ -31,10 +31,6 @@ const orderSchema = new Schema(
       country: {
         type: String,
         required: [true, "Please fill in your country."],
-        enum: [
-          ["Germany", "Austria", "Switzerland"],
-          "Shipping only to the DACH region (Germany, Austria, Switzerland",
-        ],
       },
     },
   },
