@@ -110,10 +110,10 @@ router.post("/login", (req, res, next) => {
 
         //at this point, we know that credentials are correct (login is successfull)
 
-        const { _id, username } = user;
+        const { _id, username, isAdmin } = user;
 
         // Create an object that will be set as the token payload
-        const payload = { _id, username };
+        const payload = { _id, username, isAdmin };
 
         // Create and sign the token
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
