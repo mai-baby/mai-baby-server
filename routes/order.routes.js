@@ -6,8 +6,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 const Order = require("../models/Order.model");
 
-//READ list of orders
-router.get("/orders", (req, res, next) => {
+router.get("/orders", isAuthenticated, (req, res, next) => {
   Order.find()
     .populate("products")
     .then((allOrders) => {
@@ -16,9 +15,7 @@ router.get("/orders", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-//CREATE new Order
-// ADD AUTHENTICATION
-router.post("/checkout", (req, res, next) => {
+router.post("/checkout", isAuthenticated, (req, res, next) => {
   const {
     customer,
     products,
@@ -38,11 +35,9 @@ router.post("/checkout", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-//READ Order details
-router.get("/orders/:orderId", (req, res, next) => {
+router.get("/orders/:orderId", isAuthenticated, (req, res, next) => {
   const { orderId } = req.params;
 
-  //validate orderId
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
@@ -54,9 +49,7 @@ router.get("/orders/:orderId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-//UPDATE Order
-// ADD AUTHENTICATION
-router.put("/orders/edit/:orderId", (req, res, next) => {
+router.put("/orders/edit/:orderId", isAuthenticated, (req, res, next) => {
   const { orderId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
@@ -69,9 +62,7 @@ router.put("/orders/edit/:orderId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-//DELETE Item from Order
-// ADD AUTHENTICATION
-router.put("/orders/:orderId/:itemId", (req, res, next) => {
+router.put("/orders/:orderId/:itemId", isAuthenticated, (req, res, next) => {
   const { orderId, itemId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
@@ -92,9 +83,7 @@ router.put("/orders/:orderId/:itemId", (req, res, next) => {
     .catch((error) => res.status(500).json(error));
 });
 
-//DELETE Order
-// ADD AUTHENTICATION
-router.delete("/orders/:orderId", (req, res, next) => {
+router.delete("/orders/:orderId", isAuthenticated, (req, res, next) => {
   const { orderId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {

@@ -2,14 +2,12 @@ const router = require("express").Router();
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
-// STRIPE processing payment
-// ADD AUTHENTICATION
 const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
 const express = require("express");
 const app = express();
 app.use(express.static("public"));
 
-router.post("/create-checkout-session", (req, res, next) => {
+router.post("/create-checkout-session", isAuthenticated, (req, res, next) => {
   const lineItems = req.body;
   stripe.checkout.sessions
     .create(lineItems)

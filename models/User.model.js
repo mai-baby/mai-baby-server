@@ -1,5 +1,3 @@
-// models/User.model.js
-
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
@@ -25,7 +23,6 @@ const userSchema = new Schema(
       lowercase: [true, "Username must be in lowercase letters."],
       trim: [true, "No spaces allowed."],
     },
-    // basket: [{ type: Schema.Types.ObjectId, ref: "Product" }], leave it for v2, store in React for now, maybe store quantity here
     isAdmin: { type: Boolean, default: false },
   },
   {
